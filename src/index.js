@@ -2,19 +2,53 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-class Square extends React.Component {
-  render() {
-    return (
-      <button className="square">
-        {/* TODO */}
-      </button>
-    );
-  }
+/*
+  the Square components receive values from the Board component and inform the Board component 
+  when they're clicked, in other words, the Square components are now controlled components. The Board
+  has full control over them
+**/
+function Square (props) {
+  return (
+    <button 
+      className="square" 
+      onClick={props.onClick}
+    >
+      {props.value}
+    </button>
+  );
 }
 
+/*
+  Board class that initializes all the squares
+**/
 class Board extends React.Component {
+  constructor(props){
+    super(props);
+    this.state ={
+      squares: Array(9).fill(null),
+    };
+  }
+
+  /*
+    onClick function when square component is clicked.
+    get the squares state from Boad.....
+  **/
+  handleClick(i){
+    const squares = this.state.squares.slice();
+    squares[i] = 'X';
+    this.setState({squares: squares});
+  }
+
+  /* 
+    create a square with an initial 'value' prop and an onClick handler function prop. 
+  **/
   renderSquare(i) {
-    return <Square />;
+    return (
+      <Square 
+        value={this.state.squares[i]}
+        onClick = {()=>this.handleClick(i)} 
+      />
+    );
   }
 
   render() {
@@ -65,3 +99,4 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
+
